@@ -6,9 +6,10 @@ on:
 jobs:
   databricks-test:
     runs-on: ubuntu-latest
+    environment: env 
     env:
-      DATABRICKS_HOST: ${{ secrets.host }}   
-      DATABRICKS_TOKEN: ${{ secrets.key }}  
+      DATABRICKS_HOST: ${{ secrets.DB_WS_HOST }}
+      DATABRICKS_TOKEN: ${{ secrets.KEY }}
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
