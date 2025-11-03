@@ -19,8 +19,8 @@ jobs:
       - name: Trigger notebook on Databricks cluster
         uses: databricks/run-notebook@v0
         with:
-          databricks-host: ${{ env.DATABRICKS_HOST }}
-          databricks-token: ${{ env.DATABRICKS_TOKEN }}
+          databricks-host: ${{ env.DB_WS_HOST }}
+          databricks-token: ${{ env.KEY }}
           local-notebook-path: tests/unit test.ipynb   
           git-commit: ${{ github.event.pull_request.head.sha }}
           new-cluster-json: >
