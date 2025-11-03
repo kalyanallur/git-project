@@ -1,0 +1,33 @@
+name: Run tests
+on:
+  pull_request:
+    branches:
+      - main
+jobs:
+  databricks-test:
+    runs-on: ubuntu-latest
+    env:
+      DATABRICKS_HOST: ${{ secrets.host }}   
+      DATABRICKS_TOKEN: ${{ secrets.key }}  
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Databricks CLI
+        uses: databricks/setup-cli@main
+
+      - name: Trigger notebook on Databricks cluster
+        uses: databricks/run-notebook@v0
+        with:
+          databricks-host: ${{ env.DATABRICKS_HOST }}
+          databricks-token: ${{ env.DATABRICKS_TOKEN }}
+          local-notebook-path: tests/unit test.ipynb   
+          git-commit: ${{ github.event.pull_request.head.sha }}
+          new-cluster-json: >
+            {
+              "num_workers": 1,
+              "spark_version": "11.3.x-scala2.12",
+              "node_type_id": "Standard_D3_v2"
+            }
+          # existing-cluster-id: "CLUSTER_ID"
+          timeout-seconds: 1800
